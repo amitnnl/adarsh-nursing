@@ -1,6 +1,7 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { Suspense, useMemo, useState } from "react";
+import { useSearchParams } from "next/navigation";
 import { MessageCircle, Send } from "lucide-react";
 import { courses, site, whatsappHref } from "@/lib/site";
 import { Button } from "@/components/ui/button";
@@ -28,8 +29,11 @@ const field =
 const label =
   "pointer-events-none absolute left-4 top-2 text-[11px] font-semibold uppercase tracking-[0.14em] text-ink-2/80 transition-all duration-300 peer-placeholder-shown:top-4 peer-placeholder-shown:text-[14px] peer-placeholder-shown:font-normal peer-placeholder-shown:normal-case peer-placeholder-shown:tracking-normal peer-focus:top-2 peer-focus:text-[11px] peer-focus:font-semibold peer-focus:uppercase peer-focus:tracking-[0.14em] peer-focus:text-brand-700";
 
-export function EnquiryForm({ initialCourse }: { initialCourse?: string }) {
-  const preset = courses.find((c) => c.slug === initialCourse)?.name;
+function EnquiryFormInner({ initialCourse }: { initialCourse?: string }) {
+  const searchParams = useSearchParams();
+  const paramCourse = searchParams ? searchParams.get("course") ?? undefined : undefined;
+  const activeCourse = initialCourse ?? paramCourse;
+  const preset = courses.find((c) => c.slug === activeCourse)?.name;
   const [f, setF] = useState<Form>({ ...initial, course: preset ?? initial.course });
   const [touched, setTouched] = useState(false);
 
@@ -189,3 +193,12 @@ export function EnquiryForm({ initialCourse }: { initialCourse?: string }) {
     </form>
   );
 }
+
+export function EnquiryForm({ initialCourse }: { initialCourse?: string }) {
+  return (
+    <Suspense fallback={<div className="h-64 animate-pulse rounded-2xl bg-cream" />}>
+      <EnquiryFormInner initialCourse={initialCourse} />
+    </Suspense>
+  );
+}
+

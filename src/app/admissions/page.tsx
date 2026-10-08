@@ -1,3 +1,4 @@
+import { Suspense } from "react";
 import type { Metadata } from "next";
 import { CalendarCheck, FileText, MessageCircle, Phone } from "lucide-react";
 import { EnquiryForm } from "@/components/enquiry-form";
@@ -12,10 +13,7 @@ export const metadata: Metadata = {
     "Admissions open for A.N.M., G.N.M. and B.Sc. Nursing at Adarsh College of Nursing, Narnaul. Eligibility, process, documents and enquiry form.",
 };
 
-export default async function AdmissionsPage({ searchParams }: PageProps<"/admissions">) {
-  const sp = await searchParams;
-  const course = typeof sp.course === "string" ? sp.course : undefined;
-
+export default function AdmissionsPage() {
   return (
     <>
       <PageHero
@@ -95,7 +93,9 @@ export default async function AdmissionsPage({ searchParams }: PageProps<"/admis
               </div>
             </div>
             <div className="mt-6">
-              <EnquiryForm initialCourse={course} />
+              <Suspense fallback={<div className="h-64 animate-pulse rounded-2xl bg-cream" />}>
+                <EnquiryForm />
+              </Suspense>
             </div>
           </div>
         </Reveal>
