@@ -63,23 +63,23 @@ export function PageHero({
     <section className="relative overflow-hidden bg-navy-950 text-white grain">
       <div className="pointer-events-none absolute -right-40 -top-40 h-[32rem] w-[32rem] rounded-full bg-brand-700/40 blur-3xl" />
       <div className="pointer-events-none absolute -bottom-40 -left-20 h-[24rem] w-[24rem] rounded-full bg-navy-600/40 blur-3xl" />
-      <div className="container-x relative py-20 sm:py-24 lg:py-28">
+      <div className="container-x relative py-10 sm:py-11 lg:py-14">
         <Reveal>
           <Eyebrow light>{eyebrow}</Eyebrow>
         </Reveal>
         <Reveal delay={0.08}>
-          <h1 className="mt-4 max-w-3xl font-display text-balance text-[2.6rem] leading-[1.02] font-semibold sm:text-6xl">
+          <h1 className="mt-3 max-w-3xl font-display text-balance text-[2.2rem] leading-[1.04] font-semibold sm:text-5xl">
             {title}
           </h1>
         </Reveal>
         {text && (
           <Reveal delay={0.16}>
-            <p className="mt-6 max-w-2xl text-lg leading-relaxed text-white/70">{text}</p>
+            <p className="mt-3.5 max-w-2xl text-[16px] leading-relaxed text-white/70 sm:text-lg">{text}</p>
           </Reveal>
         )}
         {children && (
           <Reveal delay={0.24}>
-            <div className="mt-8">{children}</div>
+            <div className="mt-5">{children}</div>
           </Reveal>
         )}
       </div>

@@ -63,6 +63,32 @@ function EnquiryFormInner({ initialCourse }: { initialCourse?: string }) {
     e.preventDefault();
     setTouched(true);
     if (!valid) return;
+
+    // Persist student enquiry to backend database in background
+    try {
+      fetch("/api/enquiry", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(f),
+      })
+        .then((res) => {
+          if (!res.ok) {
+            fetch("/api/enquiry.php", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify(f),
+            }).catch(() => {});
+          }
+        })
+        .catch(() => {
+          fetch("/api/enquiry.php", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(f),
+          }).catch(() => {});
+        });
+    } catch {}
+
     window.open(whatsappHref(message), "_blank", "noopener,noreferrer");
   }
 

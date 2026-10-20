@@ -3,23 +3,29 @@ import { Briefcase, Mail, Stethoscope, Users } from "lucide-react";
 import { Reveal, Stagger, StaggerItem } from "@/components/motion";
 import { PageHero, SectionHeading } from "@/components/section";
 import { ButtonAnchor } from "@/components/ui/button";
-import { openings, site, telHref } from "@/lib/site";
+import { telHref } from "@/lib/site";
+import { getJobOpenings, getSiteSettings } from "@/lib/data";
 
 export const metadata: Metadata = {
   title: "Careers - We are hiring",
   description:
-    "Teaching and non-teaching openings at Adarsh College of Nursing, Narnaul: Principal, Vice Principal, Nursing Professors, Clinical Instructors, Lab Technician and more.",
+    "Teaching and non-teaching openings at Adarsh College of Nursing: Principal, Vice Principal, Nursing Professors, Clinical Instructors, Lab Technician and more.",
 };
 
-const mailto = `mailto:${site.email}?subject=${encodeURIComponent("Application - Adarsh College of Nursing")}`;
+export default async function CareersPage() {
+  const [openings, site] = await Promise.all([
+    getJobOpenings(),
+    getSiteSettings(),
+  ]);
 
-export default function CareersPage() {
+  const mailto = `mailto:${site.email}?subject=${encodeURIComponent(`Application - ${site.name}`)}`;
+
   return (
     <>
       <PageHero
         eyebrow="We are hiring"
-        title="Teach the nurses Haryana needs."
-        text="Adarsh College of Nursing is building its teaching and support team for the 2026-27 session. Interested candidates can send their resume by email."
+        title="Teach the nurses of tomorrow."
+        text={`${site.name} is building its teaching and support team for session ${site.session}. Interested candidates can send their resume by email.`}
       >
         <ButtonAnchor href={mailto} variant="gold" size="lg">
           <Mail className="h-5 w-5" />
@@ -27,7 +33,7 @@ export default function CareersPage() {
         </ButtonAnchor>
       </PageHero>
 
-      <section className="container-x grid gap-8 py-24 lg:grid-cols-2">
+      <section className="container-x grid gap-6 py-16 lg:grid-cols-2">
         <Reveal className="rounded-[2rem] bg-white p-8 ring-1 ring-ink/5 shadow-soft sm:p-10">
           <span className="inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-brand-700 text-white">
             <Stethoscope className="h-6 w-6" strokeWidth={1.8} />
@@ -73,7 +79,7 @@ export default function CareersPage() {
         </Reveal>
       </section>
 
-      <section className="bg-white py-24">
+      <section className="bg-white py-16">
         <div className="container-x">
           <SectionHeading
             align="center"

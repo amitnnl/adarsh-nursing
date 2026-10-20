@@ -4,15 +4,19 @@ import { CtaBand } from "@/components/cta-band";
 import { FacilityIcon } from "@/components/facility-icon";
 import { Reveal, Stagger, StaggerItem } from "@/components/motion";
 import { PageHero, SectionHeading } from "@/components/section";
-import { facilities } from "@/lib/site";
+import { getFacilities, getSiteSettings } from "@/lib/data";
 
 export const metadata: Metadata = {
   title: "Facilities",
   description:
-    "Hostel, transport, spacious classrooms, nursing labs, library and a green campus at Adarsh College of Nursing, Narnaul.",
+    "Hostel, transport, spacious classrooms, nursing labs, library and a green campus at Adarsh College of Nursing.",
 };
 
-export default function FacilitiesPage() {
+export default async function FacilitiesPage() {
+  const [facilities, site] = await Promise.all([
+    getFacilities(),
+    getSiteSettings(),
+  ]);
   return (
     <>
       <PageHero
@@ -21,7 +25,7 @@ export default function FacilitiesPage() {
         text="From the hostel room to the skills lab, the campus is planned so students can live, study and practise without distraction."
       />
 
-      <section className="container-x py-24">
+      <section className="container-x py-16">
         <div className="grid gap-6 lg:grid-cols-3">
           <Reveal className="relative min-h-[26rem] overflow-hidden rounded-[2rem] shadow-lift ring-1 ring-ink/10 lg:row-span-2">
             <Image
@@ -65,14 +69,14 @@ export default function FacilitiesPage() {
         </div>
       </section>
 
-      <section className="bg-white py-24">
+      <section className="bg-white py-16">
         <div className="container-x">
           <SectionHeading
             align="center"
             eyebrow="Beyond the building"
             title="Support that follows students all the way to their first job"
           />
-          <Stagger className="mt-12 grid gap-5 md:grid-cols-3">
+          <Stagger className="mt-8 grid gap-5 md:grid-cols-3">
             {[
               ["Clinical postings", "Supervised hospital postings so students practise on real wards, not only in the lab."],
               ["Placement assistance", "Guidance with applications and interviews for hospital and healthcare roles after graduation."],
@@ -87,7 +91,7 @@ export default function FacilitiesPage() {
         </div>
       </section>
 
-      <CtaBand />
+      <CtaBand siteData={site} />
     </>
   );
 }

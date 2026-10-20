@@ -1,0 +1,83 @@
+{
+  "name": "Adarsh College of Nursing",
+  "shortName": "Narnaul, Haryana-123001",
+  "logo": "/uploads/media-1792476357170-0kapk.png",
+  "tagline": "Care Today, Cure Tomorrow",
+  "description": "Nurturing compassionate healthcare professionals in Mahendergarh, Haryana. A modern campus, experienced faculty and real clinical exposure.\nPremier nursing college in Patan, Unnao, Uttar Pradesh offering ANM, GNM, and B.Sc. Nursing degrees with modern labs and hospital attachments.",
+  "session": "2026-27",
+  "phones": [
+    "+91 9466 187 931",
+    "+91 7082 867 931"
+  ],
+  "whatsapp": "+91 9415 485 554",
+  "email": "info@adarshnursingcollege.com",
+  "address": {
+    "line1": "Niwaz Nagar, Post-Dharsoon",
+    "line2": "Tehsil Narnaul, Dist. Mahendergarh",
+    "state": "Haryana",
+    "pin": "123001",
+    "landmark": "Near Narnaul Bypass"
+  },
+  "coords": {
+    "lat": 28.108861,
+    "lng": 76.092917
+  },
+  "bannerNotice": "",
+  "isBannerActive": true,
+  "hero": {
+    "badge": "Premier Nursing College · INC Approved",
+    "titleLead": "Nurturing compassionate",
+    "titleHighlight": "healthcare professionals.",
+    "description": "Quality nursing education with hands-on hospital exposure in Mahoba, UP.",
+    "image": "/uploads/media-1792478201754-ocszw.png",
+    "slides": [
+      {
+        "src": "/uploads/media-1792478201754-ocszw.png",
+        "alt": "Adarsh College of Nursing campus building and lawns",
+        "tag": "Our Campus",
+        "caption": "Near Narnaul Bypass"
+      },
+      {
+        "src": "/images/nursing-lab.jpg",
+        "alt": "Practical nursing simulation and clinical skills lab",
+        "tag": "Practical Skills Lab",
+        "caption": "Clinical mannequins & hospital simulation beds"
+      },
+      {
+        "src": "/images/nursing-library.jpg",
+        "alt": "College library and medical learning study hall",
+        "tag": "College Library",
+        "caption": "Medical books, journals & quiet study spaces"
+      },
+      {
+        "src": "/images/poster.jpg",
+        "alt": "Admissions open poster for session 2026-27",
+        "tag": "Admissions Open",
+        "caption": "A.N.M. · G.N.M. · B.Sc. Nursing (2026-27)"
+      }
+    ],
+    "stat1Val": "100%",
+    "stat1Label": "Clinical Exposure",
+    "stat2Val": "3+",
+    "stat2Label": "Recognized Courses",
+    "stat3Val": "10:1",
+    "stat3Label": "Student-Faculty Ratio",
+    "ctaPrimary": "Enquire now",
+    "ctaPrimaryLink": "/admissions",
+    "ctaSecondary": "Explore courses",
+    "ctaSecondaryLink": "/courses"
+  },
+  "social": {
+    "facebook": "",
+    "instagram": "",
+    "youtube": "",
+    "twitter": ""
+  },
+  "brochurePdf": "",
+  "values": [
+    "Discipline",
+    "Dedication",
+    "Compassion",
+    "Excellence"
+  ]
+}

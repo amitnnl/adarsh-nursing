@@ -2,24 +2,31 @@ import type { Metadata } from "next";
 import { Gallery } from "@/components/gallery";
 import { CtaBand } from "@/components/cta-band";
 import { PageHero } from "@/components/section";
+import { getGalleryPhotos, getSiteSettings } from "@/lib/data";
 
 export const metadata: Metadata = {
   title: "Gallery",
-  description: "Photos of the Adarsh College of Nursing campus at Niwaz Nagar, Narnaul.",
+  description: "Photos of the Adarsh College of Nursing campus, labs, classrooms, and student life.",
 };
 
-export default function GalleryPage() {
+export default async function GalleryPage() {
+  const [photos, site] = await Promise.all([
+    getGalleryPhotos(),
+    getSiteSettings(),
+  ]);
+
   return (
     <>
       <PageHero
-        eyebrow="Gallery"
+        eyebrow="Campus Gallery"
         title="A look around the campus."
-        text="The college building, lawns and entrance at Niwaz Nagar. More photographs of classrooms, labs and hostel will be added soon."
+        text="The college building, modern nursing labs, library, hostel and campus life at Adarsh College of Nursing."
       />
-      <section className="container-x py-24">
-        <Gallery />
+      <section className="container-x py-16">
+        <Gallery photos={photos} />
       </section>
-      <CtaBand />
+      <CtaBand siteData={site} />
     </>
   );
 }
+

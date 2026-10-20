@@ -1,0 +1,165 @@
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider      = "prisma-client-js"
+  binaryTargets = ["native", "debian-openssl-3.0.x", "debian-openssl-1.1.x", "linux-musl-openssl-3.0.x"]
+}
+
+model AdminUser {
+  id           Int      @id @default(autoincrement())
+  username     String   @unique
+  passwordHash String
+  name         String
+  email        String?  @unique
+  role         String   @default("admin")
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  @@map("admin_users")
+}
+
+model SiteSetting {
+  id        Int      @id @default(autoincrement())
+  key       String   @unique
+  value     String   @db.Text
+  category  String   @default("general")
+  updatedAt DateTime @updatedAt
+
+  @@map("site_settings")
+}
+
+model Course {
+  id           Int      @id @default(autoincrement())
+  slug         String   @unique
+  code         String
+  name         String
+  fullName     String
+  duration     String
+  years        Int
+  type         String
+  eligibility  String   @db.Text
+  summary      String   @db.Text
+  learn        String   @db.Text
+  careers      String   @db.Text
+  accent       String   @default("rose")
+  displayOrder Int      @default(0)
+  isActive     Boolean  @default(true)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  @@map("courses")
+}
+
+model Facility {
+  id           Int      @id @default(autoincrement())
+  title        String
+  text         String   @db.Text
+  icon         String
+  displayOrder Int      @default(0)
+  isActive     Boolean  @default(true)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  @@map("facilities")
+}
+
+model JobOpening {
+  id           Int      @id @default(autoincrement())
+  title        String
+  category     String
+  status       String   @default("Open")
+  description  String?  @db.Text
+  displayOrder Int      @default(0)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  @@map("job_openings")
+}
+
+model GalleryPhoto {
+  id           Int      @id @default(autoincrement())
+  src          String
+  alt          String
+  caption      String
+  category     String?  @default("campus")
+  span         String?  @default("")
+  position     String?  @default("")
+  displayOrder Int      @default(0)
+  isActive     Boolean  @default(true)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  @@map("gallery_photos")
+}
+
+model Enquiry {
+  id            Int      @id @default(autoincrement())
+  name          String
+  phone         String
+  course        String
+  qualification String?
+  city          String?
+  message       String?  @db.Text
+  status        String   @default("New")
+  notes         String?  @db.Text
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  @@map("enquiries")
+}
+
+model Notice {
+  id           Int      @id @default(autoincrement())
+  title        String
+  content      String   @db.Text
+  link         String?
+  fileUrl      String?
+  date         String?
+  isUrgent     Boolean  @default(false)
+  isActive     Boolean  @default(true)
+  displayOrder Int      @default(0)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  @@map("notices")
+}
+
+model WhyUsCard {
+  id           Int      @id @default(autoincrement())
+  title        String
+  text         String   @db.Text
+  displayOrder Int      @default(0)
+  isActive     Boolean  @default(true)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  @@map("why_us_cards")
+}
+
+model AdmissionStep {
+  id           Int      @id @default(autoincrement())
+  stepNumber   Int      @default(1)
+  title        String
+  text         String   @db.Text
+  displayOrder Int      @default(0)
+  isActive     Boolean  @default(true)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  @@map("admission_steps")
+}
+
+model AdmissionDocument {
+  id           Int      @id @default(autoincrement())
+  title        String
+  displayOrder Int      @default(0)
+  isActive     Boolean  @default(true)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  @@map("admission_documents")
+}
+

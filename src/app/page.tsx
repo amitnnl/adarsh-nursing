@@ -9,16 +9,32 @@ import { FacilityIcon } from "@/components/facility-icon";
 import { Reveal, Stagger, StaggerItem } from "@/components/motion";
 import { SectionHeading } from "@/components/section";
 import { ButtonAnchor, ButtonLink } from "@/components/ui/button";
-import { courses, facilities, mapsLink, site, telHref, whyUs } from "@/lib/site";
+import { telHref } from "@/lib/site";
+import { getSiteSettings, getCourses, getFacilities, getWhyUs } from "@/lib/data";
 
-export default function HomePage() {
+export default async function HomePage() {
+  const [site, courses, facilities, whyUs] = await Promise.all([
+    getSiteSettings(),
+    getCourses(),
+    getFacilities(),
+    getWhyUs(),
+  ]);
+
+  const mapsLink = `https://www.google.com/maps/search/?api=1&query=${site.coords.lat},${site.coords.lng}`;
+
   return (
     <>
-      <HomeHero />
+      <HomeHero
+        hero={site.hero}
+        session={site.session}
+        phone={site.phones[0]}
+        landmark={site.address.landmark || site.address.line1}
+        slides={site.hero.slides}
+      />
       <ValuesMarquee />
 
       {/* Courses */}
-      <section id="courses" className="container-x py-24">
+      <section id="courses" className="container-x py-16">
         <div className="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
           <SectionHeading
             eyebrow="Courses offered"
@@ -32,7 +48,7 @@ export default function HomePage() {
             </ButtonLink>
           </Reveal>
         </div>
-        <Stagger className="mt-12 grid gap-6 md:grid-cols-3">
+        <Stagger className="mt-8 grid gap-6 md:grid-cols-3">
           {courses.map((c, i) => (
             <StaggerItem key={c.slug} className="h-full">
               <CourseCard course={c} index={i} />
@@ -42,7 +58,7 @@ export default function HomePage() {
       </section>
 
       {/* Why us */}
-      <section className="relative overflow-hidden bg-navy-950 py-24 text-white grain">
+      <section className="relative overflow-hidden bg-navy-950 py-16 text-white grain">
         <div className="pointer-events-none absolute -left-32 top-0 h-96 w-96 rounded-full bg-brand-700/40 blur-3xl" />
         <div className="pointer-events-none absolute -right-32 bottom-0 h-96 w-96 rounded-full bg-navy-600/40 blur-3xl" />
         <div className="container-x relative grid gap-14 lg:grid-cols-[0.9fr_1.1fr]">
@@ -77,14 +93,14 @@ export default function HomePage() {
       </section>
 
       {/* Facilities */}
-      <section className="container-x py-24">
+      <section className="container-x py-16">
         <SectionHeading
           align="center"
           eyebrow="Our facilities"
           title="A campus built for learning and living"
           text="Purpose-built classrooms, nursing labs, library, hostel and transport in a green campus near Narnaul Bypass."
         />
-        <Stagger className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+        <Stagger className="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
           {facilities.map((f) => (
             <StaggerItem
               key={f.title}
@@ -111,7 +127,7 @@ export default function HomePage() {
       </section>
 
       {/* Campus visit */}
-      <section className="container-x pb-24">
+      <section className="container-x pb-16">
         <Reveal>
           <div className="grid overflow-hidden rounded-[2rem] bg-white ring-1 ring-ink/5 shadow-soft lg:grid-cols-2">
             <div className="relative min-h-[22rem]">
@@ -164,7 +180,7 @@ export default function HomePage() {
         </Reveal>
       </section>
 
-      <CtaBand />
+      <CtaBand siteData={site} />
     </>
   );
 }

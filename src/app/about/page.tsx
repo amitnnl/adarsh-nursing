@@ -4,11 +4,12 @@ import { Award, HeartHandshake, Sparkles, Target } from "lucide-react";
 import { CtaBand } from "@/components/cta-band";
 import { Reveal, Stagger, StaggerItem } from "@/components/motion";
 import { PageHero, SectionHeading } from "@/components/section";
-import { site } from "@/lib/site";
+import { site as defaultSite } from "@/lib/site";
+import { getSiteSettings } from "@/lib/data";
 
 export const metadata: Metadata = {
   title: "About",
-  description: `About ${site.name}: our mission, values and the campus at Niwaz Nagar near Narnaul Bypass, Mahendergarh.`,
+  description: `About ${defaultSite.name}: our mission, values and campus facilities.`,
 };
 
 const valueIcons = [Target, HeartHandshake, Sparkles, Award];
@@ -19,16 +20,17 @@ const valueText: Record<string, string> = {
   Excellence: "High standards in theory, skills and ethics, so every graduate is job-ready.",
 };
 
-export default function AboutPage() {
+export default async function AboutPage() {
+  const site = await getSiteSettings();
   return (
     <>
       <PageHero
         eyebrow="About the college"
-        title="A nursing college built for the students of Mahendergarh."
-        text="Adarsh College of Nursing at Niwaz Nagar, near Narnaul Bypass, gives local students a modern, disciplined place to train as nurses without leaving home."
+        title={`A nursing college built for excellence.`}
+        text={`${site.name} at ${site.address.line1}, ${site.address.line2}, gives students a modern, disciplined place to train as nurses without leaving home.`}
       />
 
-      <section className="container-x grid gap-14 py-24 lg:grid-cols-2 lg:items-center">
+      <section className="container-x grid gap-10 py-16 lg:grid-cols-2 lg:items-center">
         <Reveal className="relative">
           <div className="relative aspect-[4/5] overflow-hidden rounded-[2rem] shadow-lift ring-1 ring-ink/10">
             <Image
@@ -71,14 +73,14 @@ export default function AboutPage() {
         </div>
       </section>
 
-      <section className="bg-white py-24">
+      <section className="bg-white py-16">
         <div className="container-x">
           <SectionHeading
             align="center"
             eyebrow="Our values"
             title="Four words on every classroom wall"
           />
-          <Stagger className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+          <Stagger className="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
             {site.values.map((v, i) => {
               const Icon = valueIcons[i];
               return (
@@ -100,7 +102,7 @@ export default function AboutPage() {
         </div>
       </section>
 
-      <section className="container-x py-24">
+      <section className="container-x py-16">
         <div className="grid gap-8 lg:grid-cols-2">
           <Reveal className="rounded-[2rem] bg-navy-950 p-10 text-white grain relative overflow-hidden">
             <div className="pointer-events-none absolute -right-20 -top-20 h-64 w-64 rounded-full bg-brand-700/40 blur-3xl" />
@@ -120,7 +122,7 @@ export default function AboutPage() {
         </div>
       </section>
 
-      <CtaBand />
+      <CtaBand siteData={site} />
     </>
   );
 }

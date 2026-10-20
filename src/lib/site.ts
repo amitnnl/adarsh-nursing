@@ -17,17 +17,21 @@ export const site = {
   },
   coords: { lat: 28.108861, lng: 76.092917 },
   values: ["Discipline", "Dedication", "Compassion", "Excellence"],
+  logo: "/images/logo-mark.png",
 };
 
 export const mapsLink = `https://www.google.com/maps/search/?api=1&query=${site.coords.lat},${site.coords.lng}`;
 export const mapsEmbed = `https://www.google.com/maps?q=${site.coords.lat},${site.coords.lng}&z=15&output=embed`;
 
 export function telHref(phone: string) {
-  return `tel:+91${phone}`;
+  const clean = phone.replace(/[^0-9+]/g, "");
+  return clean.startsWith("+") ? `tel:${clean}` : `tel:+91${clean}`;
 }
 
-export function whatsappHref(message?: string) {
-  const base = `https://wa.me/${site.whatsapp}`;
+export function whatsappHref(message?: string, numberOverride?: string) {
+  const target = (numberOverride || site.whatsapp).replace(/[^0-9]/g, "");
+  const formatted = target.startsWith("91") ? target : `91${target}`;
+  const base = `https://wa.me/${formatted}`;
   return message ? `${base}?text=${encodeURIComponent(message)}` : base;
 }
 

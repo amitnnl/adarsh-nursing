@@ -5,12 +5,12 @@ import { CtaBand } from "@/components/cta-band";
 import { Reveal, Stagger, StaggerItem } from "@/components/motion";
 import { PageHero } from "@/components/section";
 import { ButtonLink } from "@/components/ui/button";
-import { courses } from "@/lib/site";
+import { getCourses, getSiteSettings } from "@/lib/data";
 
 export const metadata: Metadata = {
   title: "Courses - A.N.M., G.N.M., B.Sc. Nursing",
   description:
-    "A.N.M. (2 years), G.N.M. (3 years) and B.Sc. Nursing (4 years) at Adarsh College of Nursing, Narnaul. Eligibility, subjects and career options.",
+    "A.N.M. (2 years), G.N.M. (3 years) and B.Sc. Nursing (4 years) at Adarsh College of Nursing. Eligibility, subjects and career options.",
 };
 
 const tone = {
@@ -19,7 +19,11 @@ const tone = {
   green: { bar: "bg-emerald-700", soft: "bg-emerald-50 text-emerald-800", ring: "ring-emerald-100" },
 } as const;
 
-export default function CoursesPage() {
+export default async function CoursesPage() {
+  const [courses, site] = await Promise.all([
+    getCourses(),
+    getSiteSettings(),
+  ]);
   return (
     <>
       <PageHero
@@ -50,7 +54,7 @@ export default function CoursesPage() {
         </Stagger>
       </section>
 
-      <section className="container-x space-y-10 py-24">
+      <section className="container-x space-y-8 py-16">
         {courses.map((c) => {
           const t = tone[c.accent];
           return (
@@ -140,7 +144,7 @@ export default function CoursesPage() {
         </Reveal>
       </section>
 
-      <CtaBand />
+      <CtaBand siteData={site} />
     </>
   );
 }

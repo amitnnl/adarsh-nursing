@@ -5,15 +5,23 @@ import { EnquiryForm } from "@/components/enquiry-form";
 import { Reveal, Stagger, StaggerItem } from "@/components/motion";
 import { PageHero, SectionHeading } from "@/components/section";
 import { ButtonAnchor } from "@/components/ui/button";
-import { admissionSteps, courses, documents, site, telHref, whatsappHref } from "@/lib/site";
+import { telHref, whatsappHref } from "@/lib/site";
+import { getSiteSettings, getAdmissionSteps, getAdmissionDocuments, getCourses } from "@/lib/data";
 
 export const metadata: Metadata = {
-  title: "Admissions 2026-27",
+  title: "Admissions",
   description:
-    "Admissions open for A.N.M., G.N.M. and B.Sc. Nursing at Adarsh College of Nursing, Narnaul. Eligibility, process, documents and enquiry form.",
+    "Admissions open for A.N.M., G.N.M. and B.Sc. Nursing at Adarsh College of Nursing. Eligibility, process, documents and enquiry form.",
 };
 
-export default function AdmissionsPage() {
+export default async function AdmissionsPage() {
+  const [site, admissionSteps, documents, courses] = await Promise.all([
+    getSiteSettings(),
+    getAdmissionSteps(),
+    getAdmissionDocuments(),
+    getCourses(),
+  ]);
+
   return (
     <>
       <PageHero
@@ -21,13 +29,13 @@ export default function AdmissionsPage() {
         title="Your seat in nursing starts with one message."
         text="Fill the short form, or call and WhatsApp the admission team directly. We reply on working days and can arrange a campus visit."
       >
-        <div className="flex flex-col gap-3 sm:flex-row">
+        <div className="flex flex-wrap gap-3">
           <ButtonAnchor href={telHref(site.phones[0])} variant="gold" size="lg">
             <Phone className="h-5 w-5" />
             {site.phones[0]}
           </ButtonAnchor>
           <ButtonAnchor
-            href={whatsappHref("Hello, I want to know about admission at Adarsh College of Nursing.")}
+            href={whatsappHref("Hello, I want to know about admission at Adarsh College of Nursing.", site.whatsapp)}
             target="_blank"
             rel="noopener noreferrer"
             variant="outline-light"
@@ -36,17 +44,29 @@ export default function AdmissionsPage() {
             <MessageCircle className="h-5 w-5" />
             WhatsApp
           </ButtonAnchor>
+          {site.brochurePdf && (
+            <ButtonAnchor
+              href={site.brochurePdf}
+              target="_blank"
+              download
+              variant="outline-light"
+              size="lg"
+            >
+              <FileText className="h-5 w-5" />
+              Download Prospectus
+            </ButtonAnchor>
+          )}
         </div>
       </PageHero>
 
-      <section className="container-x grid gap-12 py-24 lg:grid-cols-[1fr_1.1fr] lg:gap-16">
+      <section className="container-x grid gap-8 py-16 lg:grid-cols-[1fr_1.1fr] lg:gap-12">
         <div>
           <SectionHeading
             eyebrow="How it works"
             title="Four simple steps"
             text="No entrance stress at the enquiry stage. Tell us your marks and stream and we will guide you to the right course."
           />
-          <Stagger as="ol" className="mt-10 space-y-4">
+          <Stagger as="ol" className="mt-7 space-y-3.5">
             {admissionSteps.map((s, i) => (
               <StaggerItem
                 as="li"
@@ -64,7 +84,7 @@ export default function AdmissionsPage() {
             ))}
           </Stagger>
 
-          <Reveal className="mt-10 rounded-3xl bg-navy-950 p-7 text-white grain relative overflow-hidden">
+          <Reveal className="mt-7 rounded-3xl bg-navy-950 p-7 text-white grain relative overflow-hidden">
             <div className="pointer-events-none absolute -right-16 -top-16 h-48 w-48 rounded-full bg-brand-700/40 blur-3xl" />
             <h3 className="relative flex items-center gap-2 text-sm font-semibold uppercase tracking-[0.16em] text-gold-400">
               <FileText className="h-4 w-4" />
@@ -101,14 +121,14 @@ export default function AdmissionsPage() {
         </Reveal>
       </section>
 
-      <section className="bg-white py-24">
+      <section className="bg-white py-16">
         <div className="container-x">
           <SectionHeading
             align="center"
             eyebrow="Eligibility at a glance"
             title="Which course can you apply for?"
           />
-          <div className="mt-12 overflow-hidden rounded-3xl ring-1 ring-ink/10">
+          <div className="mt-8 overflow-hidden rounded-3xl ring-1 ring-ink/10">
             <table className="w-full text-left text-[15px]">
               <thead className="bg-cream text-xs uppercase tracking-[0.16em] text-ink-2">
                 <tr>

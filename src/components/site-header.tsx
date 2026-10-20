@@ -8,11 +8,27 @@ import { AnimatePresence, motion } from "framer-motion";
 import { Menu, Phone, X } from "lucide-react";
 import { nav, site, telHref } from "@/lib/site";
 import { ButtonLink } from "@/components/ui/button";
+import type { SiteData } from "@/lib/data";
 
-export function SiteHeader() {
+export function SiteHeader({
+  siteData,
+  logo,
+  siteName,
+  shortName,
+}: {
+  siteData?: SiteData;
+  logo?: string;
+  siteName?: string;
+  shortName?: string;
+} = {}) {
   const pathname = usePathname();
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
+
+  const effectivePhones = siteData?.phones?.length ? siteData.phones : site.phones;
+  const effectiveSession = siteData?.session || site.session;
+  const showBanner = siteData?.isBannerActive !== false;
+  const bannerText = siteData?.bannerNotice || `Admissions open for session ${effectiveSession} · A.N.M. · G.N.M. · B.Sc. Nursing`;
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 12);
@@ -31,26 +47,27 @@ export function SiteHeader() {
   return (
     <>
       {/* Top strip */}
-      <div className="hidden md:block bg-navy-900 text-white/90 text-[13px]">
-        <div className="container-x flex h-9 items-center justify-between">
-          <p className="tracking-wide">
-            <span className="text-gold-400 font-semibold">Admissions open</span> for session{" "}
-            {site.session} · A.N.M. · G.N.M. · B.Sc. Nursing
-          </p>
-          <div className="flex items-center gap-5">
-            {site.phones.map((p) => (
-              <a
-                key={p}
-                href={telHref(p)}
-                className="inline-flex items-center gap-1.5 hover:text-gold-300 transition-colors"
-              >
-                <Phone className="h-3.5 w-3.5" />
-                {p}
-              </a>
-            ))}
+      {showBanner && (
+        <div className="hidden md:block bg-navy-900 text-white/90 text-[13px]">
+          <div className="container-x flex h-9 items-center justify-between">
+            <p className="tracking-wide">
+              <span className="text-gold-400 font-semibold">Admissions open</span> · {bannerText}
+            </p>
+            <div className="flex items-center gap-5">
+              {effectivePhones.map((p) => (
+                <a
+                  key={p}
+                  href={telHref(p)}
+                  className="inline-flex items-center gap-1.5 hover:text-gold-300 transition-colors"
+                >
+                  <Phone className="h-3.5 w-3.5" />
+                  {p}
+                </a>
+              ))}
+            </div>
           </div>
         </div>
-      </div>
+      )}
 
       <header
         className={`sticky top-0 z-50 transition-all duration-500 ${
@@ -61,26 +78,27 @@ export function SiteHeader() {
       >
         <div
           className={`container-x flex items-center justify-between transition-all duration-500 ${
-            scrolled ? "h-16" : "h-20"
+            scrolled ? "h-14" : "h-16"
           }`}
         >
           <Link href="/" className="flex items-center gap-3 group">
-            <span className="relative h-11 w-11 overflow-hidden rounded-full ring-1 ring-ink/10 bg-white shadow-soft transition-transform duration-500 group-hover:rotate-[-6deg]">
+            <span className="relative h-11 w-11 overflow-hidden rounded-full ring-1 ring-ink/10 bg-white shadow-soft transition-transform duration-500 group-hover:rotate-[-6deg] flex items-center justify-center">
               <Image
-                src="/images/logo-mark.png"
-                alt=""
+                src={logo || site.logo || "/images/logo-mark.png"}
+                alt={siteName || site.name}
                 fill
                 sizes="44px"
-                className="object-cover scale-[1.35] translate-y-[8%]"
+                className="object-contain p-0.5"
                 priority
+                unoptimized
               />
             </span>
             <span className="leading-tight">
               <span className="block font-display text-[17px] font-semibold text-brand-800 tracking-tight">
-                Adarsh College of Nursing
+                {siteName || site.name}
               </span>
               <span className="block text-[11px] uppercase tracking-[0.18em] text-navy-800/80">
-                Narnaul · Haryana
+                {shortName || "Narnaul · Haryana"}
               </span>
             </span>
           </Link>
@@ -180,7 +198,7 @@ export function SiteHeader() {
                   Apply now
                 </ButtonLink>
                 <div className="grid grid-cols-2 gap-2">
-                  {site.phones.map((p) => (
+                  {effectivePhones.map((p) => (
                     <a
                       key={p}
                       href={telHref(p)}

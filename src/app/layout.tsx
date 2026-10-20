@@ -1,9 +1,8 @@
 import type { Metadata, Viewport } from "next";
 import { Fraunces, Manrope } from "next/font/google";
 import "./globals.css";
-import { SiteHeader } from "@/components/site-header";
-import { SiteFooter } from "@/components/site-footer";
-import { WhatsAppFab } from "@/components/whatsapp-fab";
+import { SiteShell } from "@/components/site-shell";
+import { getSiteSettings } from "@/lib/data";
 import { site } from "@/lib/site";
 
 const manrope = Manrope({
@@ -57,7 +56,9 @@ export const viewport: Viewport = {
   initialScale: 1,
 };
 
-export default function RootLayout({ children }: LayoutProps<"/">) {
+export default async function RootLayout({ children }: LayoutProps<"/">) {
+  const siteData = await getSiteSettings();
+
   return (
     <html
       lang="en"
@@ -65,10 +66,9 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       className={`${manrope.variable} ${fraunces.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">
-        <SiteHeader />
-        <main className="flex-1">{children}</main>
-        <SiteFooter />
-        <WhatsAppFab />
+        <SiteShell siteData={siteData}>
+          {children}
+        </SiteShell>
       </body>
     </html>
   );

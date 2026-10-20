@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { MessageCircle } from "lucide-react";
 import { whatsappHref } from "@/lib/site";
 
-export function WhatsAppFab() {
+export function WhatsAppFab({ whatsapp }: { whatsapp?: string } = {}) {
   const [show, setShow] = useState(false);
 
   useEffect(() => {
@@ -16,7 +16,7 @@ export function WhatsAppFab() {
 
   return (
     <a
-      href={whatsappHref("Hello, I want to know about admission at Adarsh College of Nursing.")}
+      href={whatsappHref("Hello, I want to know about admission at Adarsh College of Nursing.", whatsapp)}
       target="_blank"
       rel="noopener noreferrer"
       aria-label="Chat on WhatsApp"

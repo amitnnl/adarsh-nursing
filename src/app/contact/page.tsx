@@ -4,21 +4,43 @@ import { EnquiryForm } from "@/components/enquiry-form";
 import { Reveal, Stagger, StaggerItem } from "@/components/motion";
 import { PageHero, SectionHeading } from "@/components/section";
 import { ButtonAnchor } from "@/components/ui/button";
-import { mapsEmbed, mapsLink, site, telHref, whatsappHref } from "@/lib/site";
+import { telHref, whatsappHref } from "@/lib/site";
+import { getSiteSettings } from "@/lib/data";
 
 export const metadata: Metadata = {
   title: "Contact",
-  description: `Contact ${site.name}: ${site.phones.join(", ")}, ${site.email}. ${site.address.landmark}, ${site.address.line1}, ${site.address.line2}, Haryana.`,
+  description: "Contact Adarsh College of Nursing for admissions, counseling, and campus visits.",
 };
 
-export default function ContactPage() {
+export default async function ContactPage() {
+  const site = await getSiteSettings();
+  const mapsLink = `https://www.google.com/maps/search/?api=1&query=${site.coords.lat},${site.coords.lng}`;
+  const mapsEmbed = `https://www.google.com/maps?q=${site.coords.lat},${site.coords.lng}&z=15&output=embed`;
+
   return (
     <>
       <PageHero
         eyebrow="Contact us"
         title="Call, message or visit the campus."
         text="The admission office is happy to answer questions from students and parents. Directions to the campus are below."
-      />
+      >
+        <div className="flex flex-wrap gap-3">
+          <ButtonAnchor href={telHref(site.phones[0])} variant="gold" size="lg">
+            <Phone className="h-5 w-5" />
+            {site.phones[0]}
+          </ButtonAnchor>
+          <ButtonAnchor
+            href={whatsappHref("Hello, I have an admission enquiry.", site.whatsapp)}
+            target="_blank"
+            rel="noopener noreferrer"
+            variant="outline-light"
+            size="lg"
+          >
+            <MessageCircle className="h-5 w-5" />
+            WhatsApp
+          </ButtonAnchor>
+        </div>
+      </PageHero>
 
       <section className="container-x -mt-10 relative z-10">
         <Stagger className="grid gap-5 md:grid-cols-3">
@@ -31,7 +53,7 @@ export default function ContactPage() {
             {
               icon: MessageCircle,
               title: "WhatsApp",
-              lines: [{ label: `+91 ${site.phones[0]}`, href: whatsappHref(), external: true }],
+              lines: [{ label: `+91 ${site.whatsapp}`, href: whatsappHref("Hello, I want to inquire about admissions.", site.whatsapp), external: true }],
             },
             {
               icon: Mail,
@@ -65,7 +87,7 @@ export default function ContactPage() {
         </Stagger>
       </section>
 
-      <section className="container-x grid gap-12 py-24 lg:grid-cols-[1fr_1.1fr] lg:gap-16">
+      <section className="container-x grid gap-8 py-16 lg:grid-cols-[1fr_1.1fr] lg:gap-12">
         <div>
           <SectionHeading
             eyebrow="Visit the campus"
@@ -115,7 +137,7 @@ export default function ContactPage() {
         </Reveal>
       </section>
 
-      <section className="bg-white py-24">
+      <section className="bg-white py-16">
         <div className="container-x grid gap-12 lg:grid-cols-[0.8fr_1.2fr]">
           <SectionHeading
             eyebrow="Send a message"

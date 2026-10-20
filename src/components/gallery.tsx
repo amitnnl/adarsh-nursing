@@ -5,9 +5,9 @@ import { useCallback, useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { ChevronLeft, ChevronRight, X } from "lucide-react";
 
-type Photo = { src: string; alt: string; caption: string; span?: string; position?: string };
+type Photo = { src: string; alt: string; caption: string; span?: string; position?: string; category?: string };
 
-const photos: Photo[] = [
+const defaultPhotos: Photo[] = [
   {
     src: "/images/campus.jpg",
     alt: "College building at dusk",
@@ -40,13 +40,14 @@ const photos: Photo[] = [
   },
 ];
 
-export function Gallery() {
+export function Gallery({ photos: initialPhotos }: { photos?: Photo[] } = {}) {
+  const photos = (initialPhotos && initialPhotos.length > 0) ? initialPhotos : defaultPhotos;
   const [i, setI] = useState<number | null>(null);
 
   const close = useCallback(() => setI(null), []);
   const step = useCallback(
     (d: number) => setI((n) => (n === null ? n : (n + d + photos.length) % photos.length)),
-    [],
+    [photos.length],
   );
 
   useEffect(() => {
